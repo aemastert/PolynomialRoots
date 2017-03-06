@@ -124,6 +124,18 @@ public class PolynomialRootFinding {
 		return roots;
 	}
 	
+	public static BigDecimal bisection(Polynomial p, BigDecimal a, BigDecimal b, BigDecimal eps){
+		BigDecimal c = a.add(b).divide(TWO, eps.scale()+1, RoundingMode.HALF_UP);
+		System.out.print(c.toString() + " ");
+		System.out.println(p.value(c).setScale(eps.scale(), RoundingMode.HALF_UP));
+		if(c.subtract(a).compareTo(eps) < 0) return c;
+		if(p.value(a).multiply(p.value(c)).compareTo(BigDecimal.ZERO) < 0){
+			return bisection(p, a, c, eps);
+		} else {
+			return bisection(p, c, b, eps);
+		}
+	}
+	
 	public static List<BigDecimal> rootsOfPolynomialInIntervalUsingSturmTheoremAndBisectionAndNewtonMethod(Polynomial p, BigDecimal beginInterval, BigDecimal endInterval, int decimalPrecision){
 		beginInterval = beginInterval.setScale(decimalPrecision, RoundingMode.HALF_UP);
 		endInterval = endInterval.setScale(decimalPrecision, RoundingMode.HALF_UP);
