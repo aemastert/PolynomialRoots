@@ -132,7 +132,7 @@ public class Polynomial {
 	/**
 	 * Compare this polynomial to other
 	 * @param	other	other polynomial
-	 * @return 	-1 if this < other, 0 if this == other, 1 if this > other
+	 * @return 	-1 if this  &lt; other, 0 if this == other, 1 if this  &gt; other
 	 */
 	public int compareTo(Polynomial other){	//return -1 ak this < other, 0 ak su rovne, 1 ak this > other//bolo zmenene z term na coeffs, malo by uz fungovat spravne
 		if(coeffs.size() > other.coeffs.size()){
@@ -210,7 +210,7 @@ public class Polynomial {
 	
 	/**
 	 * Multipies this polynomial with other
-	 * @param other
+	 * @param other other polynomial
 	 */
 	public void multiply(Polynomial other){
 		List<BigDecimal> newc = new ArrayList<>();
@@ -225,7 +225,7 @@ public class Polynomial {
 	}
 	/**
 	 * Multipies this polynomial with scalar
-	 * @param scalar
+	 * @param scalar scalar to multiply with
 	 */
 	public void multiplyWithScalar(BigDecimal scalar){
 		for(int i = 0; i < coeffs.size(); i++){

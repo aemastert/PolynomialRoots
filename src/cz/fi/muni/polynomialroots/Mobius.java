@@ -23,10 +23,10 @@ public class Mobius{
 	}
 	/**
 	 * Mobius constructor, setting all parameters
-	 * @param a
-	 * @param b
-	 * @param c
-	 * @param d
+	 * @param a a
+	 * @param b b
+	 * @param c c
+	 * @param d d
 	 */
 	public Mobius(BigDecimal a, BigDecimal b, BigDecimal c, BigDecimal d){
 		this.a = a;
@@ -78,8 +78,8 @@ public class Mobius{
 	
 	/**
 	 * Evaluates this Mobius transformation in infinity or returns bound if c is 0
-	 * @param bound
-	 * @param scale
+	 * @param bound	bound to return if c is 0
+	 * @param scale division scale
 	 * @return	infimum(M(infinity) bound)
 	 */
 	public BigDecimal valueInfinityOrBound(BigDecimal bound, int scale){

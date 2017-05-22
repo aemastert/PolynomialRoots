@@ -48,7 +48,7 @@ public class PolyRoots {
 		int precisionAll = 20;
 		
 		List<Long> vcaN34_67 = new ArrayList<>();
-		/*for(int j = 0; j < polynomials34_67.size(); j++){
+		for(int j = 0; j < polynomials34_67.size(); j++){
 			int precision = precisionAll;
 			BigDecimal preci = BigDecimal.ONE.divide(new BigDecimal("10").pow(precision));
 			BigDecimal start = new BigDecimal("-20");
@@ -59,11 +59,11 @@ public class PolyRoots {
 			vcaN34_67.add(TimeUnit.MILLISECONDS.convert((t1 - t0), TimeUnit.NANOSECONDS));
 			//System.out.println("roots: " + roots.toString());
 		}
-		*/
+		
 		System.out.println("vca n done");
 		
 		List<Long> vcaH34_67 = new ArrayList<>();
-		/*for(int j = 0; j < polynomials34_67.size(); j++){
+		for(int j = 0; j < polynomials34_67.size(); j++){
 			int precision = precisionAll;
 			BigDecimal preci = BigDecimal.ONE.divide(new BigDecimal("10").pow(precision));
 			BigDecimal start = new BigDecimal("-20");
@@ -74,11 +74,11 @@ public class PolyRoots {
 			vcaH34_67.add(TimeUnit.MILLISECONDS.convert((t1 - t0), TimeUnit.NANOSECONDS));
 			//System.out.println("roots: " + roots.toString());
 		}
-		*/
+		
 		System.out.println("vca h done");
 		
 		List<Long> sturm34_67 = new ArrayList<>();
-		/*for(int j = 0; j < polynomials34_67.size(); j++){
+		for(int j = 0; j < polynomials34_67.size(); j++){
 			int precision = precisionAll;
 			BigDecimal start = new BigDecimal("-20");
 			BigDecimal end = new BigDecimal("40");
@@ -89,7 +89,7 @@ public class PolyRoots {
 			sturm34_67.add(TimeUnit.MILLISECONDS.convert((t1 - t0), TimeUnit.NANOSECONDS));
 			//System.out.println("roots: " + roots.toString());
 		}
-		*/
+		
 		System.out.println("sturm n done");
 		
 		List<Long> vasN34_67 = new ArrayList<>();
@@ -116,22 +116,22 @@ public class PolyRoots {
 		
 		System.out.println( "VCA+N & VCA+H & VAS+N & Sturm+N \\\\" );
 		for(int j = 0; j < polynomials34_67.size(); j++){
-/*			vcaNavg += vcaN34_67.get(j);
+			vcaNavg += vcaN34_67.get(j);
 			vcaHavg += vcaH34_67.get(j);
-*/			vasNavg += vasN34_67.get(j);
-//			sturmavg += sturm34_67.get(j);
-			System.out.println(/*vcaN34_67.get(j) + " & "  + vcaH34_67.get(j) + " & " + */vasN34_67.get(j) /*+ " & " + sturm34_67.get(j) + " \\\\"*/);
+			vasNavg += vasN34_67.get(j);
+			sturmavg += sturm34_67.get(j);
+			System.out.println(vcaN34_67.get(j) + " & "  + vcaH34_67.get(j) + " & " + vasN34_67.get(j) + " & " + sturm34_67.get(j) + " \\\\");
 		}
 		
-/*		vcaNavg = vcaNavg/polynomials34_67.size();
+		vcaNavg = vcaNavg/polynomials34_67.size();
 		vcaHavg = vcaHavg/polynomials34_67.size();
-*/		vasNavg = vasNavg/polynomials34_67.size();
-//		sturmavg = sturmavg/polynomials34_67.size();
+		vasNavg = vasNavg/polynomials34_67.size();
+		sturmavg = sturmavg/polynomials34_67.size();
 		
-		System.out.println( "Average & "/* + vcaNavg + " & "  + vcaHavg + " & " */+ vasNavg/* + " & " + sturmavg + " \\\\"*/);
-		System.out.println( "Minimum & "/* + vcaN34_67.get(0) + " & "  + vcaH34_67.get(0) + " & " */+ vasN34_67.get(0)/* + " & " + sturm34_67.get(0) + " \\\\"*/);
-		System.out.println( "Maximum & "/* + vcaN34_67.get(polynomials34_67.size()-1) + " & "  + vcaH34_67.get(polynomials34_67.size()-1) + " & " */+ vasN34_67.get(polynomials34_67.size()-1) /*+ " & " + sturm34_67.get(polynomials34_67.size()-1) + " \\\\"*/);
-		System.out.println( "Median & "/* + vcaN34_67.get(polynomials34_67.size()/2) + " & "  + vcaH34_67.get(polynomials34_67.size()/2) + " & " */+ vasN34_67.get(polynomials34_67.size()/2) /*+ " & " + sturm34_67.get(polynomials34_67.size()/2) + " \\\\"*/);
+		System.out.println( "Average & " + vcaNavg + " & "  + vcaHavg + " & " + vasNavg + " & " + sturmavg + " \\\\");
+		System.out.println( "Minimum & " + vcaN34_67.get(0) + " & "  + vcaH34_67.get(0) + " & " + vasN34_67.get(0) + " & " + sturm34_67.get(0) + " \\\\");
+		System.out.println( "Maximum & " + vcaN34_67.get(polynomials34_67.size()-1) + " & "  + vcaH34_67.get(polynomials34_67.size()-1) + " & " + vasN34_67.get(polynomials34_67.size()-1) + " & " + sturm34_67.get(polynomials34_67.size()-1) + " \\\\");
+		System.out.println( "Median & " + vcaN34_67.get(polynomials34_67.size()/2) + " & "  + vcaH34_67.get(polynomials34_67.size()/2) + " & " + vasN34_67.get(polynomials34_67.size()/2) + " & " + sturm34_67.get(polynomials34_67.size()/2) + " \\\\");
 		
 	}
 }
