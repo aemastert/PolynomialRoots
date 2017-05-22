@@ -9,35 +9,65 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Class representing polynomials
+ * @author Adrian E.
+ */
+
 public class Polynomial {
 
+	/**
+	 * Coefficients, coeff.get(i) represents coefficients of x^i
+	 */
 	public List<BigDecimal> coeffs;//malo by by from lowest to highest
+	/**
+	 * Derivative of this polynomial
+	 */
 	private Polynomial derivative;
 	
+	/**
+	 * Constructor with list of coefficients
+	 * @param	coeffs	coefficients list
+	 */
 	public Polynomial(List<BigDecimal> coeffs){
 		List<BigDecimal> newCoeffs = new ArrayList<>(coeffs);
 		this.coeffs = newCoeffs;
 	}
-	//zaporne exponenty sposobia fail
+	
+	/**
+	 * Constructor with a single absolute coefficient
+	 * @param	constant	absolute coeff.
+	 */
+	public Polynomial(BigDecimal constant){
+		List<BigDecimal> newCoeffs = new ArrayList<>();
+		newCoeffs.add(constant);
+		this.coeffs = newCoeffs;
+	}
+	
+	/**
+	 * Constructor with string
+	 * @param	s	string must be format ax^n+bx^m+..+cx+d, exponent must be positive int
+	 */
 	public Polynomial(String s){
-		ArrayList<String> minusStrTerms = new ArrayList<>();		
+		//zaporne exponenty sposobia fail
+		ArrayList<String> splitNegative = new ArrayList<>();		
 		for(String curString : s.split("(?<![E])-")){
 			if(curString.isEmpty()) continue;
-			minusStrTerms.add("-"+curString);
+			splitNegative.add("-"+curString);
 		}
 		if(!s.startsWith("-")){
-			minusStrTerms.set(0, minusStrTerms.get(0).substring(1));
+			splitNegative.set(0, splitNegative.get(0).substring(1));
 		}
-		List<String> plusAndMinusStrTerms = new ArrayList<>();
-		for(String curMinusString : minusStrTerms){
+		List<String> splitNegativePositive = new ArrayList<>();
+		for(String curMinusString : splitNegative){
 			for( String curString : curMinusString.split("(?<![E])\\+")){
 				if(curString.isEmpty()) continue;
-				plusAndMinusStrTerms.add(curString);
+				splitNegativePositive.add(curString);
 			}
 		}
-		List<BigDecimal> newCoefs = new ArrayList<>(plusAndMinusStrTerms.size());
+		List<BigDecimal> newCoefs = new ArrayList<>(splitNegativePositive.size());
 		newCoefs.add(BigDecimal.ZERO);
-		for(String curString : plusAndMinusStrTerms){
+		for(String curString : splitNegativePositive){
 			String parseString = new String(curString);
 			if(parseString.startsWith("-x")) parseString = "-1"+parseString.substring(1);
 			if(parseString.startsWith("x")) parseString = "1"+parseString;
@@ -56,7 +86,11 @@ public class Polynomial {
 		
 		this.coeffs = newCoefs;
 	}
-		
+	
+	/**
+	 * Compute the derivative of this 
+	 * @return derivative of this
+	 */
 	public Polynomial derivative(){
 		if(derivative != null) return derivative;
 
@@ -69,7 +103,12 @@ public class Polynomial {
 		return derivative;
 	}
 	
-	public BigDecimal value(BigDecimal x){//TODO iterativne
+	/**
+	 * Evaluate this polynomial in x
+	 * @param	x	x to evaluate
+	 * @return 	value of this in x
+	 */
+	public BigDecimal value(BigDecimal x){
 		BigDecimal sum = new BigDecimal("0");
 		BigDecimal xpower = BigDecimal.ONE;
 		for(int i = 0; i < coeffs.size(); i++){
@@ -90,8 +129,12 @@ public class Polynomial {
 		return true;
 	}
 	
-	//return -1 ak this < other, 0 ak su rovne, 1 ak this > other//bolo zmenene z term na coeffs, malo by uz fungovat spravne
-	public int compareTo(Polynomial other){
+	/**
+	 * Compare this polynomial to other
+	 * @param	other	other polynomial
+	 * @return 	-1 if this < other, 0 if this == other, 1 if this > other
+	 */
+	public int compareTo(Polynomial other){	//return -1 ak this < other, 0 ak su rovne, 1 ak this > other//bolo zmenene z term na coeffs, malo by uz fungovat spravne
 		if(coeffs.size() > other.coeffs.size()){
 			for(int i = other.coeffs.size(); i < coeffs.size(); i++)
 				if(coeffs.get(i).compareTo(BigDecimal.ZERO) != 0) return 1;
@@ -109,7 +152,11 @@ public class Polynomial {
 		}
 		return 0;
 	}
-	
+
+	/**
+	 * Returns degree of this polynomial
+	 * @return	degree
+	 */
 	public int degree(){
 	    int d = 0;
 	    for (int i = coeffs.size() - 1; i >= 0; i--)
@@ -119,7 +166,10 @@ public class Polynomial {
 	        }
 	    return d;
 	}
-	
+	/**
+	 * Returns leading coefficient
+	 * @return	leading coefficient
+	 */
 	public BigDecimal getHighestCoeff(){
 		BigDecimal hc = new BigDecimal("0");
 	    for (int i = coeffs.size() - 1; i >= 0; i--)
@@ -129,8 +179,11 @@ public class Polynomial {
 	        }
 	    return hc;
 	}
-	
-	public void plus(Polynomial other){
+	/**
+	 * Adds other polynomial to this
+	 * @param other	polynomial
+	 */
+	public void add(Polynomial other){
 		for(int i = 0; i < coeffs.size() && i < other.coeffs.size(); i++){
 			coeffs.set(i, coeffs.get(i).add(other.coeffs.get(i)));
 		}
@@ -140,8 +193,11 @@ public class Polynomial {
 			}
 		}
 	}
-	
-	public void minus(Polynomial other){
+	/**
+	 * Substracts other polynomial from this
+	 * @param other	polynomial
+	 */
+	public void subtract(Polynomial other){
 		for(int i = 0; i < coeffs.size() && i < other.coeffs.size(); i++){
 			coeffs.set(i, coeffs.get(i).subtract(other.coeffs.get(i)));
 		}
@@ -152,6 +208,10 @@ public class Polynomial {
 		}
 	}
 	
+	/**
+	 * Multipies this polynomial with other
+	 * @param other
+	 */
 	public void multiply(Polynomial other){
 		List<BigDecimal> newc = new ArrayList<>();
 		for(int i = 0; i < coeffs.size() + other.coeffs.size() - 1; i++)
@@ -163,13 +223,63 @@ public class Polynomial {
 		}
 		this.coeffs = newc;
 	}
-	
+	/**
+	 * Multipies this polynomial with scalar
+	 * @param scalar
+	 */
 	public void multiplyWithScalar(BigDecimal scalar){
 		for(int i = 0; i < coeffs.size(); i++){
 			coeffs.set(i, coeffs.get(i).multiply(scalar));
 		}
 	}
+	/**
+	 * Polynomial Long division
+	 * @param n dividend
+	 * @param d divisor, must not be 0 polynomial
+	 * @param divScale scale of division
+	 * @return	Quotient and Remainder in list, get(0) and get(1) respectively
+	 */
+	public static List<Polynomial> longDivision(Polynomial n, Polynomial d, int divScale){
+		RoundingMode rounding = RoundingMode.DOWN;
+		Polynomial q = new Polynomial("0");
+		Polynomial r = new Polynomial(n.toString());
+		r.coeffs = new ArrayList<>(n.coeffs);
 	
+		Polynomial zeroP = new Polynomial(BigDecimal.ZERO.setScale(divScale, rounding).toString());
+		
+		while(zeroP.compareTo(r) != 0 && r.degree() >= d.degree()){
+			BigDecimal rCoef = new BigDecimal("0");
+			for (int i = r.coeffs.size() - 1; i >= 0; i--)
+		        if (r.coeffs.get(i).compareTo(new BigDecimal("0")) != 0){ 
+		        	rCoef = r.coeffs.get(i);
+		        	break;
+		        }
+			BigDecimal dCoef = new BigDecimal("0");
+			for (int i = d.coeffs.size() - 1; i >= 0; i--)
+		        if (d.coeffs.get(i).compareTo(new BigDecimal("0")) != 0){ 
+		        	dCoef = d.coeffs.get(i);
+		        	break;
+		        }
+			BigDecimal tCoef = rCoef.divide(dCoef, divScale * 2, rounding);
+			int tExpon = r.degree() - d.degree();
+			Polynomial t = new Polynomial(tCoef + "x^" + tExpon);
+			q.add(t);
+			t.multiply(d);
+			r.subtract(t);
+			for(int i = 0; i < r.coeffs.size(); i++){
+				r.coeffs.set(i, r.coeffs.get(i).setScale(divScale, rounding));
+			}
+		}
+		
+		List<Polynomial> returnList = new ArrayList<>();
+		returnList.add(q);
+		returnList.add(r);
+		return returnList;
+	}	
+	/**
+	 * Returns polynomial where x is substituted with -x
+	 * @return	substituted poly
+	 */
 	public Polynomial substituteWithMinusX(){
 		List<BigDecimal> newc = new ArrayList<>(coeffs);
 		for(int i = 0; i < newc.size(); i++){
@@ -177,10 +287,14 @@ public class Polynomial {
 		}
 		return new Polynomial(newc);
 	}
-	
+	/**
+	 * Substitutes x in this polynomial with q
+	 * @param q	polynomial to substitute
+	 * @return substituted polynomial
+	 */
 	public Polynomial substituteWithPolynomial(Polynomial q){
 		Polynomial toReturn = new Polynomial(BigDecimal.ZERO.toString());
-		
+		/*
 		for(int i = 0; i <= degree(); i++){
 			if(coeffs.get(i).compareTo(BigDecimal.ZERO) != 0){
 				BigDecimal c = coeffs.get(i);
@@ -192,9 +306,23 @@ public class Polynomial {
 				toReturn.plus(toAdd);
 			}
 		}
+		*/
+		/*for(int j = 0; j < coeffs.size(); j++){
+			coeffs.set(j, coeffs.get(j).stripTrailingZeros());
+		}*/
+		for(int i = degree(); i > 0; i--){
+			toReturn.add(new Polynomial(coeffs.get(i)));
+			toReturn.multiply(q);
+			/*for(int j = 0; j < toReturn.coeffs.size(); j++){
+				toReturn.coeffs.set(j, toReturn.coeffs.get(j).stripTrailingZeros());
+			}*/
+		}
+		toReturn.add(new Polynomial(coeffs.get(0)));
 		return toReturn;
 	}
-	
+	/**
+	 * Transforms this polynomial p into (x+1)^degree * p(1/x+1) 
+	 */
 	public void substituteThisWithOne_div_X_plus_1_multiplied_x_n(){
 		this.reverseCoefficients();
 		Polynomial transform = new Polynomial(BigDecimal.ZERO.toString());
@@ -202,12 +330,18 @@ public class Polynomial {
 			if(coeffs.get(i).compareTo(BigDecimal.ZERO) != 0){
 				Polynomial toAdd = new Polynomial(binomialLine(BigInteger.valueOf(i)));
 				toAdd.multiplyWithScalar(coeffs.get(i));
-				transform.plus(toAdd);
+				transform.add(toAdd);
 			}
 		}
 		this.coeffs = transform.coeffs;
 	}
 	
+	/**
+	 * Creates binomial coefficient n over k
+	 * @param n
+	 * @param k
+	 * @return	binomial coeff.
+	 */
 	public static BigInteger binomialCoeff(BigInteger n, BigInteger k){
 		BigInteger l = (k.compareTo((n.subtract(k))) > 0) ? k : (n.subtract(k));
 		BigInteger numerator = BigInteger.ONE;
@@ -220,7 +354,11 @@ public class Polynomial {
 		}
 		return numerator.divide(denominator);
 	}
-	
+	/**
+	 * Creates list of coefficients of nth line of binomial triangle
+	 * @param n
+	 * @return list of coefficients
+	 */
 	public static List<BigDecimal> binomialLine(BigInteger n){
 		List<BigDecimal> blist = new ArrayList<>();
 		for(BigInteger i = BigInteger.ZERO; i.compareTo(n.divide(new BigInteger("2"))) <= 0; i = i.add(BigInteger.ONE)){
@@ -232,7 +370,9 @@ public class Polynomial {
 		blist.addAll(blist2);
 		return blist;
 	}
-	
+	/**
+	 * Reverses coeffiecients of this
+	 */
 	public void reverseCoefficients(){
 		Collections.reverse(coeffs);
 	}
@@ -254,6 +394,7 @@ public class Polynomial {
 				}
 			}
 		}
+		if(sb.length() == 0) sb.append(0);
 		return sb.toString();
-	}		
+	}	
 }
